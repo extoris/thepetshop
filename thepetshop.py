@@ -17,7 +17,9 @@ class Item:
     def __str__(self):
         return (self.name, self.price)  
 
+
 def get_sourse(url, params):
+    print('get request')
     cookies = {
         '_shopify_y': 'ca302c19-F4BA-4AE2-57E7-28DC47AE14D7',
         'session': 'eyJleHByZXNzRGVsaXZlcnlEYXRhIjp7Imdsb2JhbEZsYWciOnRydWUsImV4cHJlc3NEZWxpdmVyeUF2YWlsYWJsZSI6ZmFsc2UsImxvY2FsV2FyZWhvdXNlSWQiOm51bGx9LCJsb2NhbFdhcmVob3VzZSI6eyJsb2NhbFdhcmVob3VzZUlkIjpudWxsLCJmb3JtYXR0ZWRBZGRyZXNzIjpudWxsLCJzZWxlY3RlZEFkZHJlc3NDb29yZGluYXRlcyI6bnVsbCwibG9jYWxXYXJlaG91c2VJc09wZW4iOmZhbHNlLCJleHByZXNzRGVsaXZlcnlBdmFpbGFibGUiOmZhbHNlfX0%3D.I%2F2h9tUmjNb2ZM8g03dvxJ8cwrtPbL6URs6bzW9%2F%2B8M',
@@ -45,21 +47,10 @@ def get_sourse(url, params):
     response = requests.get(url, params=params, headers=headers)
 
     return response
-
-    # with open("json.html", "w") as file:
-    #     file.write(response.text)
-
-    # soup = BeautifulSoup(response.text, "lxml")
- 
-    # with open("sourse.html", "r") as file:
-    #     response = file.read()
-    # soup = BeautifulSoup(response, "lxml")
-
-    # return soup
     
 
 def get_json(sourse):
-    print('get_json')
+    print('get json')
     try:
         soup = BeautifulSoup(sourse.text, "lxml")
         script = soup.find(string=re.compile('window.__remixContext')).split(';')[0].split('Context = ')[-1].strip()
@@ -85,6 +76,7 @@ def next_page(data):
 
 
 def get_answer(data):
+    print('complite data')
     answer = []
     list_items = data['products']['nodes']
     for title in list_items:
