@@ -1,5 +1,6 @@
 import json
 import re
+import time
 import requests
 from bs4 import BeautifulSoup
 import csv
@@ -14,7 +15,7 @@ class Item:
         self.price = price
 
     def __str__(self):
-        return (self.name, self.price)    
+        return (self.name, self.price)  
 
 def get_sourse(url, params):
     cookies = {
@@ -67,7 +68,7 @@ def get_json(sourse):
     except AttributeError:
         products = {}
         print('NO JSON DATA')
-    return products
+    return products  
 
 
 def get_params(data): 
@@ -76,10 +77,12 @@ def get_params(data):
         'cursor': data["products"]["pageInfo"]["endCursor"],
         '_data': 'routes/($locale).products._index',
     }   
-    return params
+    return params 
 
-def next_page(data, NEXT_PAGE):
+
+def next_page(data):
     NEXT_PAGE = data["products"]["pageInfo"]["hasNextPage"]
+
 
 def get_answer(data):
     answer = []
@@ -102,10 +105,12 @@ def main():
     params = get_params(data)
     get_answer(data)
     while NEXT_PAGE:        
-        data = get_sourse(url, params)
-        get_answer(data)
+        json_data = get_sourse(url, params)
+        data = json_data.json()
         params = get_params(data)
-        next_page(data, NEXT_PAGE)
+        get_answer(data)
+        next_page(data)
+        time.sleep(3)
         
 
 if __name__ == '__main__':
